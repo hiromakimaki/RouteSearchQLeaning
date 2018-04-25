@@ -72,7 +72,7 @@ public class Main extends Application {
 
 			this.button.setOnAction((actionEvent) -> {
 				this.root.getChildren().clear();
-				for(int i = 0; i < 5; i++) {
+				for(int i = 0; i < 50; i++) {
 					this.qLearningEnvironment.learnOneStep();
 				}
 				this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));

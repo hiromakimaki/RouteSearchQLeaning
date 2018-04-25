@@ -4,13 +4,16 @@ public class QLearningEnvironment {
 
 	// At least, the width and height must be larger than 3.
 	public static final int FIELD[][] = {
-			{1, 1, 1, 1, 1, 1, 0, 0, 1, 0},
-			{1, 0, 1, 0, 0, 1, 0, 1, 1, 1},
-			{1, 0, 1, 0, 0, 1, 0, 1, 0, 0},
-			{2, 1, 2, 1, 1, 2, 0, 1, 0, 0},
-			{0, 0, 1, 0, 0, 1, 1, 2, 1, 0},
-			{1, 1, 1, 0, 0, 1, 0, 0, 1, 0},
-			{0, 0, 1, 1, 1, 1, 1, 1, 1, 1}
+			{1, 1, 1, 1, 1, 2, 1, 1, 1, 0},
+			{1, 0, 1, 0, 0, 1, 0, 0, 0, 0},
+			{1, 0, 1, 0, 0, 1, 1, 1, 0, 0},
+			{1, 1, 2, 1, 1, 1, 0, 1, 1, 1},
+			{1, 0, 0, 1, 0, 1, 0, 1, 0, 0},
+			{1, 0, 0, 1, 0, 2, 1, 1, 0, 0},
+			{1, 1, 1, 1, 1, 1, 0, 2, 1, 1},
+			{0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
+			{0, 1, 0, 0, 0, 1, 0, 1, 0, 1},
+			{0, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 	};
 	public static final int WIDTH = FIELD[0].length;
 	public static final int HEIGHT = FIELD.length;
@@ -21,7 +24,7 @@ public class QLearningEnvironment {
 	public static final int GOAL_X = WIDTH - 1;
 	public static final int GOAL_Y = HEIGHT - 1;
 
-	private final int MAX_TURN_PER_TRIAL = 200;
+	private final int MAX_TURN_PER_TRIAL = 50;
 	private QLearningAgent agent;
 
 
@@ -92,13 +95,13 @@ public class QLearningEnvironment {
 		double reward = -2;
 		if(x == nextX & y == nextY) {
 			// negative reward for staying the same location.
-			reward -= 15;
+			reward -= 30;
 		} else {
 			// positive reward for the next location.
-			reward += FIELD[nextY][nextX];
+			reward += (FIELD[nextY][nextX] - 1) * 10;
 			// goal reward
 			if(nextX == GOAL_X & nextY == GOAL_Y) {
-				reward += 50;
+				reward += 70;
 			}
 		}
 		return reward;
