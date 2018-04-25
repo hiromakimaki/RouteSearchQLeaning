@@ -61,7 +61,7 @@ public class Main extends Application {
 	private final int CIRCLE_RADIUS = RECT_SIZE / 2;
 
 	private Button button;
-	private QLearningAgent qLearningAgent;
+	private QLearningEnvironment qLearningEnvironment;
 	private BorderPane root;
 	private Scene scene;
 
@@ -73,23 +73,23 @@ public class Main extends Application {
 			this.button.setOnAction((actionEvent) -> {
 				this.root.getChildren().clear();
 				for(int i = 0; i < 5; i++) {
-					this.qLearningAgent.learnOneStep();
+					this.qLearningEnvironment.learnOneStep();
 				}
-				this.root.getChildren().addAll(getRectangles(QLearningAgent.FIELD));
-				this.root.getChildren().addAll(getOptimalActionTexts(this.qLearningAgent.getOptimalAction()));
-				this.root.getChildren().addAll(getCircle(QLearningAgent.GOAL));
+				this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
+				this.root.getChildren().addAll(getOptimalActionTexts(this.qLearningEnvironment.getAgentOptimalAction()));
+				this.root.getChildren().addAll(getCircle(QLearningEnvironment.GOAL_X, QLearningEnvironment.GOAL_Y));
 				this.root.setBottom(this.button);
 			});
 
-			this.qLearningAgent = new QLearningAgent();
+			this.qLearningEnvironment = new QLearningEnvironment();
 			this.root = new BorderPane();
-			this.root.getChildren().addAll(getRectangles(QLearningAgent.FIELD));
-			this.root.getChildren().addAll(getOptimalActionTexts(this.qLearningAgent.getOptimalAction()));
-			this.root.getChildren().add(getCircle(QLearningAgent.GOAL));
+			this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
+			this.root.getChildren().addAll(getOptimalActionTexts(this.qLearningEnvironment.getAgentOptimalAction()));
+			this.root.getChildren().add(getCircle(QLearningEnvironment.GOAL_X, QLearningEnvironment.GOAL_Y));
 			this.root.setBottom(button);
 
-			final int sceneHeight = QLearningAgent.HEIGHT * UNIT_SIZE + 50; // plus button
-			final int sceneWidth = QLearningAgent.WIDTH * UNIT_SIZE;
+			final int sceneHeight = QLearningEnvironment.HEIGHT * UNIT_SIZE + 50; // plus button
+			final int sceneWidth = QLearningEnvironment.WIDTH * UNIT_SIZE;
 
 			this.scene = new Scene(this.root,sceneWidth,sceneHeight);
 			this.scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
@@ -104,8 +104,8 @@ public class Main extends Application {
 		launch(args);
 	}
 
-	public Circle getCircle(int[] status) {
-		return new Circle(status[1] * UNIT_SIZE + CIRCLE_RADIUS, status[0] * UNIT_SIZE + CIRCLE_RADIUS, CIRCLE_RADIUS, Color.WHITE);
+	public Circle getCircle(int x, int y) {
+		return new Circle(x * UNIT_SIZE + CIRCLE_RADIUS, y * UNIT_SIZE + CIRCLE_RADIUS, CIRCLE_RADIUS, Color.WHITE);
 	}
 
 	private List<Rectangle> getRectangles(int[][] field){
