@@ -19,23 +19,23 @@ public enum Action {
 		this.y = y;
 	}
 
-	Integer getNum() {
+	public Integer getNum() {
 		return this.num;
 	}
 
-	String getSign() {
+	public String getSign() {
 		return this.sign;
 	}
 
-	Integer getX() {
+	public Integer getX() {
 		return this.x;
 	}
 
-	Integer getY() {
+	public Integer getY() {
 		return this.y;
 	}
 
-	static Action getAction(Integer num) {
+	public static Action getAction(Integer num) {
 		for (Action a : Action.values()) {
 			if(num == a.getNum()) {
 				return a;
