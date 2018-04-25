@@ -21,6 +21,7 @@ public class QLearningEnvironment {
 	public static final int GOAL_X = WIDTH - 1;
 	public static final int GOAL_Y = HEIGHT - 1;
 
+	private final int MAX_TURN_PER_TRIAL = 200;
 	private QLearningAgent agent;
 
 
@@ -42,11 +43,10 @@ public class QLearningEnvironment {
 	 *
 	 */
 	public void learnOneStep() {
-		int maxTurn = 200;
 		boolean reachGoal = false;
 		double reward = 0.0;
 		this.agent.initializeLocationAndActionList(START_X, START_Y);
-		for (int i = 0; i < maxTurn; i++) {
+		for (int i = 0; i < MAX_TURN_PER_TRIAL; i++) {
 			if(reachGoal) {
 				break;
 			}

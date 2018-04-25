@@ -7,7 +7,9 @@ import java.util.stream.Collectors;
 
 public class QLearningAgent {
 
-	public static final double EPSILON = 0.2;
+	private final double GREEDY_EPSILON = 0.2;
+	private final double QVALUE_ALPHA = 0.1;
+	private final double QVALUE_GAMMA = 0.99;
 
 	private double qValue[][][];// = new double[HEIGHT][WIDTH][Action.values().length];
 	private int width;
@@ -114,8 +116,6 @@ public class QLearningAgent {
 	 */
 	public void updateQValue(double reward) {
 		Action lastAction = this.actionList.getLast();
-		double alpha = 0.1;
-		double gamma = 0.99;
 		double qMax = Double.NEGATIVE_INFINITY;
 		for (Action a : Action.values()) {
 			if (qMax < this.qValue[this.y][this.x][a.getNum()]) {
@@ -123,8 +123,8 @@ public class QLearningAgent {
 			}
 		}
 		this.qValue[this.beforeY][this.beforeX][lastAction.getNum()] =
-				(1 - alpha) * this.qValue[this.beforeY][this.beforeX][lastAction.getNum()]
-						+ alpha * (reward + gamma * qMax);
+				(1 - QVALUE_ALPHA) * this.qValue[this.beforeY][this.beforeX][lastAction.getNum()]
+						+ QVALUE_ALPHA * (reward + QVALUE_GAMMA * qMax);
 	}
 
 	/**
@@ -136,7 +136,7 @@ public class QLearningAgent {
 		Action choicedAction = null;
 		Random r = new Random();
 		double randomDouble = r.nextDouble();
-		if(randomDouble < EPSILON) {
+		if(randomDouble < GREEDY_EPSILON) {
 			// epsilon: random action
 			int randomInt = r.nextInt(Action.values().length);
 			choicedAction = Action.getAction(randomInt);
