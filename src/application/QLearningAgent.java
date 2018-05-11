@@ -10,6 +10,7 @@ public class QLearningAgent {
 	private final double GREEDY_EPSILON = 0.2;
 	private final double QVALUE_ALPHA = 0.1;
 	private final double QVALUE_GAMMA = 0.99;
+	private final int MAX_TURN_PER_TRIAL = 50;
 
 	private double qValue[][][];// = new double[HEIGHT][WIDTH][Action.values().length];
 	private int width;
@@ -21,11 +22,11 @@ public class QLearningAgent {
 	private int beforeY;
 	private LinkedList<Action> actionList;
 
-	public QLearningAgent(int width, int height, int startX, int startY){
+	public QLearningAgent(int width, int height){
 		this.qValue = new double[height][width][Action.values().length];
 		this.width = width;
 		this.height = height;
-		this.initializeLocationAndActionList(startX, startY);
+		this.initializeLocationAndActionList(QLearningEnvironment.START_X, QLearningEnvironment.START_Y);
 	}
 
 	public int getX() {
@@ -46,6 +47,42 @@ public class QLearningAgent {
 
 	public void addAction(Action action) {
 		this.actionList.add(action);
+	}
+
+	/**
+	 * Execute one learning step.
+	 *
+	 */
+	public void learnOneStep() {
+		boolean reachGoal = false;
+		double reward = 0.0;
+		this.initializeLocationAndActionList(QLearningEnvironment.START_X, QLearningEnvironment.START_Y);
+		for (int i = 0; i < MAX_TURN_PER_TRIAL; i++) {
+			if(reachGoal) {
+				break;
+			}
+			int x = this.getX();
+			int y = this.getY();
+			Action action = this.choiceActionByEpsilonGreedy();
+
+			int[] nextLoc = QLearningEnvironment.nextLocation(x, y, action);
+			int nextX = nextLoc[0];
+			int nextY = nextLoc[1];
+
+			reward += QLearningEnvironment.getReward(x, y, action);
+
+			this.updateLocation(nextX, nextY);
+			this.addAction(action);
+			this.updateQValue(reward);
+
+			reachGoal = nextX == QLearningEnvironment.GOAL_X & nextY == QLearningEnvironment.GOAL_Y;
+		}
+		// for debugging
+		System.out.println("***** RESULT *****");
+		if(reachGoal) {
+			System.out.println(reward);
+			System.out.println(this.getActionListString());
+		}
 	}
 
 	/**

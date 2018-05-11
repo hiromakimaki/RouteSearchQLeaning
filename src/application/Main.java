@@ -61,7 +61,7 @@ public class Main extends Application {
 	private final int CIRCLE_RADIUS = RECT_SIZE / 2;
 
 	private Button button;
-	private QLearningEnvironment qLearningEnvironment;
+	private QLearningAgent agent;
 	private BorderPane root;
 	private Scene scene;
 
@@ -73,18 +73,21 @@ public class Main extends Application {
 			this.button.setOnAction((actionEvent) -> {
 				this.root.getChildren().clear();
 				for(int i = 0; i < 50; i++) {
-					this.qLearningEnvironment.learnOneStep();
+					this.agent.learnOneStep();
 				}
 				this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
-				this.root.getChildren().addAll(getOptimalActionTexts(this.qLearningEnvironment.getAgentOptimalAction()));
+				this.root.getChildren().addAll(getOptimalActionTexts(this.agent.getOptimalAction()));
 				this.root.getChildren().addAll(getCircle(QLearningEnvironment.GOAL_X, QLearningEnvironment.GOAL_Y));
 				this.root.setBottom(this.button);
 			});
 
-			this.qLearningEnvironment = new QLearningEnvironment();
+			this.agent = new QLearningAgent(
+				QLearningEnvironment.WIDTH,
+				QLearningEnvironment.HEIGHT
+			);
 			this.root = new BorderPane();
 			this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
-			this.root.getChildren().addAll(getOptimalActionTexts(this.qLearningEnvironment.getAgentOptimalAction()));
+			this.root.getChildren().addAll(getOptimalActionTexts(this.agent.getOptimalAction()));
 			this.root.getChildren().add(getCircle(QLearningEnvironment.GOAL_X, QLearningEnvironment.GOAL_Y));
 			this.root.setBottom(button);
 

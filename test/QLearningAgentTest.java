@@ -12,14 +12,14 @@ public class QLearningAgentTest {
 
 	@Test
 	public void testChoiceActionByEpsilonGreedy(){
-		QLearningAgent agent = new QLearningAgent(QLearningEnvironment.WIDTH, QLearningEnvironment.HEIGHT, QLearningEnvironment.START_X, QLearningEnvironment.START_Y);
+		QLearningAgent agent = new QLearningAgent(QLearningEnvironment.WIDTH, QLearningEnvironment.HEIGHT);
 		Action choicedAction = agent.choiceActionByEpsilonGreedy();
 		// TODO: implement the test (for random case).
 	}
 
 	@Test
 	public void testUpdateQValue() throws NoSuchFieldException, IllegalAccessException {
-		QLearningAgent agent = new QLearningAgent(QLearningEnvironment.WIDTH, QLearningEnvironment.HEIGHT, QLearningEnvironment.START_X, QLearningEnvironment.START_Y);
+		QLearningAgent agent = new QLearningAgent(QLearningEnvironment.WIDTH, QLearningEnvironment.HEIGHT);
 		Action choicedAction = agent.choiceActionByEpsilonGreedy();
 		agent.addAction(choicedAction);
 		// Positive reward is given on the initial location and the choicedAction.
@@ -34,17 +34,12 @@ public class QLearningAgentTest {
 	}
 
 	@Test
-	public void testGetOptimalAction() {
-		// TODO: implementing this test
-	}
-
-	@Test
 	public void testUpdateLocation(){
 		int beforeX = 0;
 		int beforeY = 1;
 		int newX = 1;
 		int newY = 2;
-		QLearningAgent agent = new QLearningAgent(QLearningEnvironment.WIDTH, QLearningEnvironment.HEIGHT, QLearningEnvironment.START_X, QLearningEnvironment.START_Y);
+		QLearningAgent agent = new QLearningAgent(QLearningEnvironment.WIDTH, QLearningEnvironment.HEIGHT);
 		agent.updateLocation(beforeX, beforeY);
 		agent.updateLocation(newX, newY);
 		assertEquals(agent.getX(), newX);

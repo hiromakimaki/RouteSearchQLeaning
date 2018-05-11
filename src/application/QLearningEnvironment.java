@@ -24,58 +24,6 @@ public class QLearningEnvironment {
 	public static final int GOAL_X = WIDTH - 1;
 	public static final int GOAL_Y = HEIGHT - 1;
 
-	private final int MAX_TURN_PER_TRIAL = 50;
-	private QLearningAgent agent;
-
-
-	public QLearningEnvironment(){
-		this.agent = new QLearningAgent(WIDTH, HEIGHT, START_X, START_Y);
-	}
-
-	/**
-	 * Get the optimal actions of the agent
-	 *
-	 * @return optimal actions
-	 */
-	public Action[][] getAgentOptimalAction(){
-		return this.agent.getOptimalAction();
-	}
-
-	/**
-	 * Execute one learning step.
-	 *
-	 */
-	public void learnOneStep() {
-		boolean reachGoal = false;
-		double reward = 0.0;
-		this.agent.initializeLocationAndActionList(START_X, START_Y);
-		for (int i = 0; i < MAX_TURN_PER_TRIAL; i++) {
-			if(reachGoal) {
-				break;
-			}
-			int x = this.agent.getX();
-			int y = this.agent.getY();
-			Action action = this.agent.choiceActionByEpsilonGreedy();
-
-			int[] nextLoc = this.nextLocation(x, y, action);
-			int nextX = nextLoc[0];
-			int nextY = nextLoc[1];
-
-			reward += this.getReward(x, y, action);
-
-			this.agent.updateLocation(nextX, nextY);
-			this.agent.addAction(action);
-			this.agent.updateQValue(reward);
-
-			reachGoal = nextX == GOAL_X & nextY == GOAL_Y;
-		}
-		// for debugging
-		System.out.println("***** RESULT *****");
-		if(reachGoal) {
-			System.out.println(reward);
-			System.out.println(agent.getActionListString());
-		}
-	}
 
 	/**
 	 * Calculate the reward, which does NOT contain that of the congestion.
@@ -86,8 +34,8 @@ public class QLearningEnvironment {
 	 *
 	 * @return base reward
 	 */
-	public double getReward(int x, int y, Action action) {
-		int[] nextLocation = this.nextLocation(x, y, action);
+	public static double getReward(int x, int y, Action action) {
+		int[] nextLocation = nextLocation(x, y, action);
 		int nextX = nextLocation[0];
 		int nextY = nextLocation[1];
 
@@ -115,7 +63,7 @@ public class QLearningEnvironment {
 	 *
 	 * @return {@code true} if the location is outside, else {@code false}
 	 */
-	public boolean isOutOfRange(int x, int y) {
+	public static boolean isOutOfRange(int x, int y) {
 		return x < 0 || x >= WIDTH || y < 0 || y >= HEIGHT;
 	}
 
@@ -129,7 +77,7 @@ public class QLearningEnvironment {
 	 *
 	 * @return the result location of the action
 	 */
-	public int[] nextLocation(int x, int y, Action action){
+	public static int[] nextLocation(int x, int y, Action action){
 		int nextX = x + action.getX();
 		int nextY = y + action.getY();
 		int[] loc = {nextX, nextY};
