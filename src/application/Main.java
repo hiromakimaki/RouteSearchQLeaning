@@ -60,6 +60,7 @@ public class Main extends Application {
 	private final int RECT_SIZE = UNIT_SIZE - 10;
 	private final int LINE_WIDTH = 5;
 	private final int CIRCLE_RADIUS = RECT_SIZE / 2;
+	private final int NODE_CIRCLE_RADIUS = RECT_SIZE / 4;
 
 	private Button button;
 	private QLearningAgent agent;
@@ -76,7 +77,8 @@ public class Main extends Application {
 				for(int i = 0; i < 50; i++) {
 					this.agent.learnOneStep();
 				}
-				this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
+				//this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
+				this.root.getChildren().addAll(getCircles(QLearningEnvironment.FIELD));
 				this.root.getChildren().addAll(getOptimalActionTexts(this.agent.getOptimalAction()));
 				this.root.getChildren().addAll(getCircle(QLearningEnvironment.GOAL_X, QLearningEnvironment.GOAL_Y));
 				this.root.setBottom(this.button);
@@ -87,7 +89,8 @@ public class Main extends Application {
 				QLearningEnvironment.HEIGHT
 			);
 			this.root = new BorderPane();
-			this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
+			//this.root.getChildren().addAll(getRectangles(QLearningEnvironment.FIELD));
+			this.root.getChildren().addAll(getCircles(QLearningEnvironment.FIELD));
 			this.root.getChildren().addAll(getOptimalActionTexts(this.agent.getOptimalAction()));
 			this.root.getChildren().add(getCircle(QLearningEnvironment.GOAL_X, QLearningEnvironment.GOAL_Y));
 			this.root.setBottom(button);
@@ -128,6 +131,23 @@ public class Main extends Application {
 				rect.setX(UNIT_SIZE*x + LINE_WIDTH);
 				rect.setY(UNIT_SIZE*y + LINE_WIDTH);
 				result.add(rect);
+			}
+		}
+		return result;
+	}
+
+	private List<Circle> getCircles(int[][] field){
+		List<Circle> result = new ArrayList<>();
+		int height = field.length;
+		int width = field[0].length;
+		for (int y = 0; y < height; y++) {
+			for (int x = 0; x < width; x++) {
+				// Outer circle
+				Circle circle = new Circle(x * UNIT_SIZE + CIRCLE_RADIUS, y * UNIT_SIZE + CIRCLE_RADIUS, NODE_CIRCLE_RADIUS, Color.AQUAMARINE);
+				result.add(circle);
+				// Inner circle
+				circle = new Circle(x * UNIT_SIZE + CIRCLE_RADIUS, y * UNIT_SIZE + CIRCLE_RADIUS, NODE_CIRCLE_RADIUS - LINE_WIDTH, Color.WHITE);
+				result.add(circle);
 			}
 		}
 		return result;
