@@ -58,6 +58,7 @@ public class Main extends Application {
 
 	private final int UNIT_SIZE = 50;
 	private final int RECT_SIZE = UNIT_SIZE - 10;
+	private final int LINE_WIDTH = 5;
 	private final int CIRCLE_RADIUS = RECT_SIZE / 2;
 
 	private Button button;
@@ -108,7 +109,7 @@ public class Main extends Application {
 	}
 
 	public Circle getCircle(int x, int y) {
-		return new Circle(x * UNIT_SIZE + CIRCLE_RADIUS, y * UNIT_SIZE + CIRCLE_RADIUS, CIRCLE_RADIUS, Color.WHITE);
+		return new Circle(x * UNIT_SIZE + CIRCLE_RADIUS, y * UNIT_SIZE + CIRCLE_RADIUS, CIRCLE_RADIUS, Color.BLACK);
 	}
 
 	private List<Rectangle> getRectangles(int[][] field){
@@ -117,9 +118,15 @@ public class Main extends Application {
 		int width = field[0].length;
 		for (int y = 0; y < height; y++) {
 			for (int x = 0; x < width; x++) {
+				// Outer rect
 				Rectangle rect = new Rectangle(RECT_SIZE, RECT_SIZE, RewardColor.getRewardColor(field[y][x]).getColor());
 				rect.setX(UNIT_SIZE*x);
 				rect.setY(UNIT_SIZE*y);
+				result.add(rect);
+				// Inner rect
+				rect = new Rectangle(RECT_SIZE - 2 * LINE_WIDTH, RECT_SIZE - 2 * LINE_WIDTH, Color.WHITE);
+				rect.setX(UNIT_SIZE*x + LINE_WIDTH);
+				rect.setY(UNIT_SIZE*y + LINE_WIDTH);
 				result.add(rect);
 			}
 		}
@@ -134,7 +141,7 @@ public class Main extends Application {
 			for (int x = 0; x < width; x++) {
 				Text text = new Text(UNIT_SIZE*x+12, UNIT_SIZE*y+25, actions[y][x].getSign());
 				text.setFont(Font.font("Verdana", FontWeight.BOLD, 22));
-				text.setFill(Color.WHITE);
+				text.setFill(Color.BLACK);
 				result.add(text);
 			}
 		}
